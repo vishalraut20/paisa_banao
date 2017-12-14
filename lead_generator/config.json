@@ -1,0 +1,8 @@
+{
+  "funds_url":[
+    "http://www.moneycontrol.com/mutual-funds/performance-tracker/returns/small-and-mid-cap.html"
+  ],
+  "holding_base_url": "http://www.moneycontrol.com/india/mutualfunds/mfinfo/portfolio_holdings",
+  "large_cap" : "http://www.moneycontrol.com/mutual-funds/performance-tracker/returns/large-cap.html",
+  "mid_cap": "http://www.moneycontrol.com/mutual-funds/performance-tracker/returns/small-and-mid-cap.html"
+}
