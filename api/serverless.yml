@@ -72,12 +72,27 @@ functions:
           path: add-tips
           method: post
   get_tips:
-    handler: handler.handler.get_tips
+    handler: handler.handler.get_list_of_tips
     events:
       - http:
           path: get-tips
           method: get
 
+  get_tip_by_id:
+    handler: handler.handler.get_tip_by_id
+    events:
+      - http:
+          path: get-tips/{tip_id}
+          method: get
+
+  delete_tip_by_id:
+    handler: handler.handler.delete_tip_by_id
+    events:
+      - http:
+          path: get-tips/{tip_id}
+          method: delete
+
+          
 #    The following are a few example events you can configure
 #    NOTE: Please make sure to change your handler code to work with those events
 #    Check the event documentation for details
