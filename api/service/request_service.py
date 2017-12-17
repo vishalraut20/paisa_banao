@@ -41,7 +41,7 @@ class RequestService():
 
     def get_tip_by_id(self, tip_id):
         tip = self.tips_dao.get_tips_by_id_from_db(tip_id)
-        return tip
+        return tip["Item"]
 
     def remove_tip_by_id(self, tip_id):
-        self.tips_dao.remove_tip(tip_id)
+        self.tips_dao.remove_tip_by_id(tip_id)

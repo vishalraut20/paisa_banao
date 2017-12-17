@@ -26,7 +26,7 @@ def get_list_of_tips(event, context):
 
 def get_tip_by_id(event, context):
     tip_service = request_service.RequestService()
-    result = tip_service.get_tip_by_id(event["pathParam"]["tip_id"])
+    result = tip_service.get_tip_by_id(event['pathParameters']['tip_id'])
     return {
         "statusCode": HTTPStatus.OK.value,
         "body": json.dumps(result)
@@ -34,7 +34,7 @@ def get_tip_by_id(event, context):
 
 def delete_tip_by_id(event, context):
     tip_service = request_service.RequestService()
-    tip_service.remove_tip_by_id(event["pathParam"]["tip_id"])
+    tip_service.remove_tip_by_id(event['pathParameters']['tip_id'])
     return{
         "statusCode": HTTPStatus.OK.value
     }

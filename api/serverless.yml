@@ -69,27 +69,27 @@ functions:
     handler: handler.handler.add_tips
     events:
       - http:
-          path: add-tips
+          path: tips
           method: post
   get_tips:
     handler: handler.handler.get_list_of_tips
     events:
       - http:
-          path: get-tips
+          path: tips
           method: get
 
   get_tip_by_id:
     handler: handler.handler.get_tip_by_id
     events:
       - http:
-          path: get-tips/{tip_id}
+          path: tips/{tip_id}
           method: get
 
   delete_tip_by_id:
     handler: handler.handler.delete_tip_by_id
     events:
       - http:
-          path: get-tips/{tip_id}
+          path: tips/{tip_id}
           method: delete
 
           
