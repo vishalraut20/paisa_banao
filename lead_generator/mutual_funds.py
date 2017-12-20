@@ -26,28 +26,21 @@ class MoneyControl:
             html_data = self._get_data_from_url(url)
             funds_list = self._get_fund_list_from_html(html_data)
             self.create_holding_map(funds_list)
-        # final_map = sorted(self.holding_map.items(),
-        #                    key=operator.itemgetter(1),
-        #                    reverse=True)
         final_map = self.holding_map
-        print(final_map)
+        # print(final_map)
         map_file = open("../output.json", "a")
         map_file.write("\n\n")
         map_file.write(str(datetime.now()))
-        # map_file.write(str(final_map))
         stocks_above_sd = self.stock_above_SD(final_map)
-        # stocks_above_sd_sorted = sorted(stocks_above_sd.items(),
-        #                                 key=operator.itemgetter(1),
-        #                                 reverse=True)
         map_file.write(str(stocks_above_sd))
         print(datetime.now())
-        # map_file.close()
+        map_file.close()
 
     def stock_above_SD(self, stock_info_map):
         stocks_above_sd = {}
         for key in stock_info_map:
             stock_percents = stock_info_map.get(key).get("percent")
-            print(stock_percents)
+            # print(stock_percents)
             sd = 1
             median = 0
             if len(stock_percents) > 1:
@@ -72,7 +65,7 @@ class MoneyControl:
             self._update_holding_map(self.holding_map, holding_list)
             count += 1
             # break
-        print(count)
+        # print(count)
         return self.holding_map
 
     def _update_holding_map(self, holding_map, holding_list):
