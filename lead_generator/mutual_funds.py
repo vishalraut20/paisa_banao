@@ -1,9 +1,8 @@
-import requests
 import json
-import operator
+import requests
+import statistics
 from bs4 import BeautifulSoup
 from datetime import datetime
-import statistics
 
 
 class TopMutualFunds:
