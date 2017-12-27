@@ -39,15 +39,18 @@ class MoneyControl:
     def stock_above_SD(self, stock_info_map):
         stocks_above_sd = {}
         for key in stock_info_map:
-            stock_percents = stock_info_map.get(key).get("percent")
-            # print(stock_percents)
-            sd = 1
-            median = 0
-            if len(stock_percents) > 1:
-                sd = statistics.stdev(stock_percents)
-                median = statistics.median(stock_percents)
-            stocks_above_sd[key] = {"sd": sd, "count": 0, "median": median}
-            stocks_above_sd.get(key)["count"] = len(stock_percents)
+            try:
+                stock_percents = stock_info_map.get(key).get("percent")
+                print(stock_percents)
+                sd = 1
+                median = 0
+                if stock_percents and len(stock_percents) > 2:
+                    sd = statistics.stdev(stock_percents)
+                    median = statistics.median(stock_percents)
+                stocks_above_sd[key] = {"sd": sd, "count": 0, "median": median}
+                stocks_above_sd.get(key)["count"] = len(stock_percents)
+            except:
+                pass
         stocks_above_sd = sorted(
             stocks_above_sd.items(), key=lambda x: x[1]["count"], reverse=True)
         print(stocks_above_sd)
@@ -78,7 +81,7 @@ class MoneyControl:
                 share_info.get("percent").append(holding.get("%"))
                 holding_map[holding.get("title")] = share_info
             else:
-                share_info = {"count": 1, "percent": [holding.get("%")]}
+                share_info = {"count": 1, "percent": [holding.get("%", 0)]}
                 holding_map[holding.get("title")] = share_info
         return holding_map
 
@@ -111,7 +114,7 @@ class MoneyControl:
                     if a and str(a).__contains__("title"):
                         share_title = a.get("title")
                         share_obj["title"] = share_title
-            for column in row.find_all("td")[-1:]:
+            for column in row.find_all("td")[1:]:
                 try:
                     share_obj["%"] = float(column.get_text())
                 except:
