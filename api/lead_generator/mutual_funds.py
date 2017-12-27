@@ -14,33 +14,33 @@ class TopMutualFunds:
 class MoneyControl:
 
     def __init__(self):
-        json_data = open("config.json").read()
+        json_data = open("../config/config.json").read()
         self.config_json = json.loads(json_data)
-        self.holding_map = {}
 
     def get_list_of_funds(self):
-        print(datetime.now())
-
+        current_holding_map = {}
         for url in self.config_json.get("funds_url"):
             html_data = self._get_data_from_url(url)
             funds_list = self._get_fund_list_from_html(html_data)
-            self.create_holding_map(funds_list)
-        final_map = self.holding_map
-        # print(final_map)
-        map_file = open("../output.json", "a")
+            current_holding_map = self.update_holding_map(funds_list,
+                                                          current_holding_map)
+        final_stocks_map = self.stock_stats(current_holding_map)
+        self.write_output_to_file(final_stocks_map)
+
+    def write_output_to_file(self, final_stocks_map):
+        file_name = "../../output/" + \
+                    str(datetime.now().strftime("%Y%m%d-%H%M%S")) + ".json"
+        map_file = open(file_name, "w")
         map_file.write("\n\n")
         map_file.write(str(datetime.now()))
-        stocks_above_sd = self.stock_above_SD(final_map)
-        map_file.write(str(stocks_above_sd))
-        print(datetime.now())
+        map_file.write(str(final_stocks_map))
         map_file.close()
 
-    def stock_above_SD(self, stock_info_map):
+    def stock_stats(self, stock_info_map):
         stocks_above_sd = {}
         for key in stock_info_map:
             try:
                 stock_percents = stock_info_map.get(key).get("percent")
-                print(stock_percents)
                 sd = 1
                 median = 0
                 if stock_percents and len(stock_percents) > 2:
@@ -52,10 +52,9 @@ class MoneyControl:
                 pass
         stocks_above_sd = sorted(
             stocks_above_sd.items(), key=lambda x: x[1]["count"], reverse=True)
-        print(stocks_above_sd)
         return stocks_above_sd
 
-    def create_holding_map(self, funds_list):
+    def update_holding_map(self, funds_list, current_holding_map):
         count = 0
         for fund in funds_list:
             fund_holding_url = self.config_json.get("holding_base_url") \
@@ -63,12 +62,10 @@ class MoneyControl:
                                + fund
             holding_html = self._get_data_from_url(fund_holding_url)
             holding_list = self._get_holding_list_from_html(holding_html)
-            # print(holding_list)
-            self._update_holding_map(self.holding_map, holding_list)
+            current_holding_map = self._update_holding_map(
+                current_holding_map, holding_list)
             count += 1
-            # break
-        # print(count)
-        return self.holding_map
+        return current_holding_map
 
     def _update_holding_map(self, holding_map, holding_list):
         for holding in holding_list:
